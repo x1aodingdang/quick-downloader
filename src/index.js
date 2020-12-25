@@ -57,24 +57,34 @@ http
     if (statusCode === 200) {
       // 144500
       // Len = bytes = 147964152
-      console.log(Len, Len / 2);
 
-      const _gap = Len / 2;
+      const _gap = Math.floor(Len / COUNT);
+      const lenStarts = [];
+      const lenEnds = [];
+
+      console.log(Len, _gap, Math.floor(_gap));
 
       for (let index = 0; index < Len; index += _gap) {
+        const lenStart = index === 0 ? index : index + 1;
+        const lenEnd = Math.min(index + _gap, Len);
+        lenStarts.push(lenStart);
+        lenEnds.push(lenEnd);
         const params = {
           url: __URL,
           lenMAX: Len,
-          lenStart: index === 0 ? index : index + 1,
-          lenEnd: index + _gap,
+          lenStart,
+          lenEnd,
           // headers
           // "If-Range":
           ifRange: ifRange,
         };
 
-        // console.log("params", params);
+        console.log("params", params);
         child(params);
       }
+
+      console.log("lenStarts,", lenStarts);
+      console.log("lenEnds,", lenEnds);
 
       // Len;
       // 开启子进程
