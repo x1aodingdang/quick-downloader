@@ -3,18 +3,30 @@ const path = require("path");
 const fs = require("fs");
 const slog = require("single-line-log").stdout;
 
-const OUTPUT = path.join(path.resolve(__dirname, "../"), `output`);
+// const OUTPUT = path.join(path.resolve(__dirname, "../"), `output`);
 
 async function child(opttions) {
-  const { url, lenMAX, lenStart, lenEnd, ifRange } = opttions;
+  const {
+    url,
+    lenMAX,
+    lenStart,
+    lenEnd,
+    ifRange,
+    cb,
+    OUTPUT,
+    targetPath,
+  } = opttions;
 
   const _range = `${lenStart}-${lenEnd}`;
   const Range = `bytes=${_range}`;
 
   console.log("Range", Range);
 
+  // console.log("Range", Range);
+
   // ws://127.0.0.1:9229/f2b32d20-5996-4163-94fb-7e6b65a07e98
-  return await http
+  // return await
+  http
     .get(
       url,
       {
@@ -31,13 +43,14 @@ async function child(opttions) {
       },
       (res) => {
         const { statusCode, headers, url } = res;
+        // console.log("statusCode", statusCode, "Range", Range);
         // 2715254784   2651616
         // console.log("statusCode: ", statusCode);
         // console.log("headers: ", headers);
         // console.log("url: ", url, headers, headers.path);
         // const ip = res.socket.localAddress;
         // const port = res.socket.localPort;
-        const filename = res.connection._httpMessage.path;
+        // const filename = res.connection._httpMessage.path;
         // console.log(
         //   `您的 IP 地址是 ${ip}，源端口是 ${port}, filename: ${filename}`
         // );
@@ -73,7 +86,8 @@ async function child(opttions) {
             const buf = Buffer.concat(chunks, size);
 
             // console.log(buf.toString());
-            const _path = path.join(OUTPUT, `${_range}.${filename.substr(1)}`);
+            // const _path = path.join(OUTPUT, `${_range}.${filename.substr(1)}`);
+            // const _path = path.join(OUTPUT, `${filename}.${_range}`);
 
             if (!fs.existsSync(OUTPUT)) {
               console.log(`${OUTPUT} does not exist, creating`);
@@ -85,11 +99,12 @@ async function child(opttions) {
                 console.log(`mkdir ${OUTPUT} success`);
               });
             }
-            fs.writeFile(_path, buf, {}, (error) => {
+            fs.writeFile(targetPath, buf, {}, (error) => {
               if (error !== null) {
-                return console.log(`write ${_path} failing`, error);
+                return console.log(`write ${targetPath} failing`, error);
               }
-              console.log(`writeFile success ${_path}`);
+              console.log(`writeFile success ${targetPath}`);
+              cb();
             });
           } catch (error) {
             console.error("end-error", error);
