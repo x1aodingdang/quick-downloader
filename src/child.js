@@ -5,6 +5,13 @@ const slog = require("single-line-log").stdout;
 
 // const OUTPUT = path.join(path.resolve(__dirname, "../"), `output`);
 
+process.on("message", (params) => {
+  console.log(`CHILD got message: ${params.index}`);
+  if (params.type === "RUN") {
+    child(params);
+  }
+});
+
 async function child(opttions) {
   const {
     url,
@@ -24,8 +31,6 @@ async function child(opttions) {
 
   // console.log("Range", Range);
 
-  // ws://127.0.0.1:9229/f2b32d20-5996-4163-94fb-7e6b65a07e98
-  // return await
   http
     .get(
       url,
@@ -43,17 +48,6 @@ async function child(opttions) {
       },
       (res) => {
         const { statusCode, headers, url } = res;
-        // console.log("statusCode", statusCode, "Range", Range);
-        // 2715254784   2651616
-        // console.log("statusCode: ", statusCode);
-        // console.log("headers: ", headers);
-        // console.log("url: ", url, headers, headers.path);
-        // const ip = res.socket.localAddress;
-        // const port = res.socket.localPort;
-        // const filename = res.connection._httpMessage.path;
-        // console.log(
-        //   `您的 IP 地址是 ${ip}，源端口是 ${port}, filename: ${filename}`
-        // );
 
         let chunks = [];
         let size = 0;
@@ -76,9 +70,6 @@ async function child(opttions) {
 
           const cmdText = `Progress ---  ${size}/${Len} \n`;
           slog(cmdText);
-          // console.log(cmdText);
-
-          // Do nothing
         });
 
         res.on("end", () => {
@@ -104,7 +95,10 @@ async function child(opttions) {
                 return console.log(`write ${targetPath} failing`, error);
               }
               console.log(`writeFile success ${targetPath}`);
-              cb();
+              process.send({
+                type: "CB",
+              });
+              process.exit();
             });
           } catch (error) {
             console.error("end-error", error);

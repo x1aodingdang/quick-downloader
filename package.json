@@ -4,7 +4,8 @@
   "description": "Quick downloader",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --max-old-space-size=3000 --inspect src/index.js",
+    "start": "nodemon --max-old-space-size=3000 src/index.js",
+    "start:inspect": "nodemon --max-old-space-size=3000 --inspect src/index.js",
     "start:child": "nodemon --max-old-space-size=3000 --inspect src/child.js"
   },
   "keywords": [],
@@ -12,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "log4js": "^6.3.0",
+    "natives": "^1.1.6",
     "nodemon": "^2.0.6",
     "single-line-log": "^1.1.2"
   },

@@ -5,36 +5,27 @@ const fs = require("fs");
 const log4js = require("log4js");
 const util = require("util");
 const log = require("single-line-log").stdout;
-const child = require("./child");
+// const child = require("./child");
 const merge = require("./merge");
 
-
-// const len = 100000;
-// for (let index = 0; index < len; index++) {
-//   // console.log(index);
-//   let cmdText = `Progress ---${index}/${len}`;
-//   log(cmdText);
-// }
-
-// return;
-// log4js.configure({
-//   appenders: { cheese: { type: "file", filename: "cheese.log" } },
-//   categories: { default: { appenders: ["cheese"], level: "error" } },
-// });
-
 // const url = "";
-// const url = "http://192.168.0.167:10000/ubuntu-20.04-desktop-amd64.iso";
+const __URL = "http://192.168.0.167:10000/ubuntu-20.04-desktop-amd64.iso";
 // const __URL = "http://192.168.0.167:10000/wechat_devtools_1.03.2008270_x64.exe";
 // const __URL =
 //   "http://gosspublic.alicdn.com/oss-browser/1.7.4/oss-browser-win32-x64.zip?spm=a2c4g.11186623.2.10.5dcc1144IcwSVV&file=oss-browser-win32-x64.zip";
 // const __URL = "http://dl.2345.com/pic/2345pic_v9.3.0.8549.exe";
 // const __URL = "http://mirror.lzu.edu.cn/ubuntu-releases/20.04.1/ubuntu-20.04.1-desktop-amd64.iso";
-const __URL = "http://onlinedown.rbread04.cn/huajunsafe/VMware-workstation-full-16.0.0-16894299.exe";
+// const __URL =
+//   "http://onlinedown.rbread04.cn/huajuns afe/VMware-workstation-full-16.0.0-16894299.exe";
+// const __URL =
+//   "http://forspeed.rbread05.cn/down/newdown/10/22/baofengjihuogonji_v17.0.rar";
+// const __URL =
+//   "http://nodejs.org/dist/v14.15.3/node-v14.15.3-x64.msi";
 
 // const OUTPUT = path.join(__dirname, `output`);
 const OUTPUT = path.join(path.resolve(__dirname, "../"), `output`);
 
-const COUNT = 10;
+const COUNT = 100;
 
 // child_process.exec("rm -rf ./output/")
 
@@ -83,7 +74,6 @@ http
       console.time("multithreading");
 
       for (let index = 0; index < Len; index += _gap) {
-        executeCountLen++;
         const lenStart = index === 0 ? index : index + 1;
         const lenEnd = Math.min(index + _gap, Len);
         lenStarts.push(lenStart);
@@ -92,6 +82,8 @@ http
         const _range = `${lenStart}-${lenEnd}`;
 
         const params = {
+          type: "RUN",
+          index: executeCountLen,
           url: __URL,
           lenMAX: Len,
           lenStart,
@@ -102,13 +94,34 @@ http
           // headers
           // "If-Range":
           ifRange: ifRange,
-          cb: cb,
         };
+
+        executeCountLen++;
 
         paramsList.push(params);
 
         // console.log("params", params);
-        child(params);
+        // child(params);
+
+        const child = child_process.fork(
+          `./src/child.js`,
+          [],
+          {}
+          // (error, stdout, stderr) => {
+          //   console.log(error, stdout, stderr);
+          //   if (error) {
+          //     throw error;
+          //   }
+          //   console.log(stdout);
+          // }
+        );
+
+        child.on("message", (message) => {
+          if (message.type === "CB") {
+            cb();
+          }
+        });
+        child.send(params);
       }
 
       function cb() {
