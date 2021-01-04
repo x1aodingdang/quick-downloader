@@ -1,12 +1,11 @@
 const http = require("http");
 const path = require("path");
 const fs = require("fs");
-const slog = require("single-line-log").stdout;
 
 // const OUTPUT = path.join(path.resolve(__dirname, "../"), `output`);
 
 process.on("message", (params) => {
-  console.log(`CHILD got message: ${params.index}`);
+  // console.log(`CHILD got message: ${params.index}`);
   if (params.type === "RUN") {
     child(params);
   }
@@ -14,6 +13,7 @@ process.on("message", (params) => {
 
 async function child(opttions) {
   const {
+    index,
     url,
     lenMAX,
     lenStart,
@@ -27,7 +27,7 @@ async function child(opttions) {
   const _range = `${lenStart}-${lenEnd}`;
   const Range = `bytes=${_range}`;
 
-  console.log("Range", Range);
+  // console.log("Range", Range);
 
   // console.log("Range", Range);
 
@@ -68,8 +68,15 @@ async function child(opttions) {
 
           chunks.push(chunk);
 
-          const cmdText = `Progress ---  ${size}/${Len} \n`;
-          slog(cmdText);
+          // const cmdText = `Progress ---  ${size}/${Len} \n`;
+          // slog(cmdText);
+
+          process.send({
+            type: "DOWNLOADING",
+            current: size,
+            total: Len,
+            index,
+          });
         });
 
         res.on("end", () => {
