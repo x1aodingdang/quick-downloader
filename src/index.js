@@ -3,13 +3,14 @@ const path = require("path");
 const child_process = require("child_process");
 const slog = require("single-line-log").stdout;
 const merge = require("./merge");
-
 const os = require("os");
 
-// const url = "";
+// const __URL = "http://downloads.prepros.io/v7/Prepros-Setup-7.3.29.exe";
+// const __URL = "http://v2.googlehelper.net/src/Ghelper2.2.1.all.zip";
+const __URL = "http://download.bypass.cn/Bypass_1.14.44.zip";
 // const __URL = "http://192.168.0.167:10000/ubuntu-20.04-desktop-amd64.iso";
 // const __URL = "http://192.168.0.167:10000/wechat_devtools_1.03.2008270_x64.exe";
-const __URL = "http://akamaicdn.webex.com/client/webexapp.msi";
+// const __URL = "http://akamaicdn.webex.com/client/webexapp.msi";
 // const __URL = "http://file.foxitreader.cn/file/Channel/edit/FoxitInst-R2.exe";
 // const __URL =
 //   "http://gosspublic.alicdn.com/oss-browser/1.7.4/oss-browser-win32-x64.zip?spm=a2c4g.11186623.2.10.5dcc1144IcwSVV&file=oss-browser-win32-x64.zip";
@@ -22,14 +23,12 @@ const __URL = "http://akamaicdn.webex.com/client/webexapp.msi";
 // const __URL =
 //   "http://nodejs.org/dist/v14.15.3/node-v14.15.3-x64.msi";
 
-// const OUTPUT = path.join(__dirname, `output`);
 const OUTPUT = path.join(path.resolve(__dirname, "../"), `output`);
 
-const COUNT = os.cpus().length;
+const COUNT = os.cpus().length - 1;
 
 // child_process.exec("rm -rf ./output/")
 
-// ws://127.0.0.1:9229/f2b32d20-5996-4163-94fb-7e6b65a07e98
 http
   .get(__URL, {}, (res, req) => {
     const { statusCode, headers, url } = res;
@@ -43,28 +42,24 @@ http
     console.log(
       `您的 IP 地址是 ${ip}，源端口是 ${port}, filename: ${filename}`
     );
-    // return;
 
     // headers.path
     // console.log(util.inspect(res, { showHidden: false, depth: null }));
 
-    let chunks = [];
-    let size = 0;
 
     const Len = headers["content-length"];
     const ifRange = headers["etag"] || headers["last-modified"];
 
     if (statusCode === 200) {
-      // 144500
-      // Len = bytes = 147964152
 
       const _gap = Math.floor(Len / COUNT);
       const lenStarts = [];
       const lenEnds = [];
       const paramsList = [];
       let totalProgress = [];
+      let timeId = null;
 
-      setInterval(() => {
+      timeId = setInterval(() => {
         const current = totalProgress.reduce((val, next) => {
           return val + next;
         });
@@ -134,11 +129,13 @@ http
         if (executeCount === executeCountLen) {
           console.log("success");
 
+          clearInterval(timeId);
+
           merge({
             filename,
-            // OUTPUT:
+            // OUTPUT:  
             output: path.join(OUTPUT, filename),
-            lenMAX: Len,
+            lenMAX: Len, 
             fileList: paramsList.map((v) => {
               return {
                 targetPath: v.targetPath,
