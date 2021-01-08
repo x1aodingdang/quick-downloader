@@ -1,4 +1,4 @@
-const http = require("http");
+const { request } = require("./utils");
 const path = require("path");
 const child_process = require("child_process");
 const slog = require("single-line-log").stdout;
@@ -7,7 +7,6 @@ const os = require("os");
 
 // const __URL = "http://downloads.prepros.io/v7/Prepros-Setup-7.3.29.exe";
 // const __URL = "http://v2.googlehelper.net/src/Ghelper2.2.1.all.zip";
-const __URL = "http://download.bypass.cn/Bypass_1.14.44.zip";
 // const __URL = "http://192.168.0.167:10000/ubuntu-20.04-desktop-amd64.iso";
 // const __URL = "http://192.168.0.167:10000/wechat_devtools_1.03.2008270_x64.exe";
 // const __URL = "http://akamaicdn.webex.com/client/webexapp.msi";
@@ -18,8 +17,8 @@ const __URL = "http://download.bypass.cn/Bypass_1.14.44.zip";
 // const __URL = "http://mirror.lzu.edu.cn/ubuntu-releases/20.04.1/ubuntu-20.04.1-desktop-amd64.iso";
 // const __URL =
 //   "http://onlinedown.rbread04.cn/huajunsafe/VMware-workstation-full-16.0.0-16894299.exe";
-// const __URL =
-//   "http://forspeed.rbread05.cn/down/newdown/10/22/baofengjihuogonji_v17.0.rar";
+const __URL =
+  "https://forspeed.rbread05.cn/down/newdown/10/22/baofengjihuogonji_v17.0.rar";
 // const __URL =
 //   "http://nodejs.org/dist/v14.15.3/node-v14.15.3-x64.msi";
 
@@ -28,8 +27,7 @@ const OUTPUT = path.join(path.resolve(__dirname, "../"), `output`);
 const COUNT = os.cpus().length - 1;
 
 // child_process.exec("rm -rf ./output/")
-
-http
+request(__URL)
   .get(__URL, {}, (res, req) => {
     const { statusCode, headers, url } = res;
 
@@ -46,12 +44,10 @@ http
     // headers.path
     // console.log(util.inspect(res, { showHidden: false, depth: null }));
 
-
     const Len = headers["content-length"];
     const ifRange = headers["etag"] || headers["last-modified"];
 
     if (statusCode === 200) {
-
       const _gap = Math.floor(Len / COUNT);
       const lenStarts = [];
       const lenEnds = [];
@@ -133,9 +129,9 @@ http
 
           merge({
             filename,
-            // OUTPUT:  
+            // OUTPUT:
             output: path.join(OUTPUT, filename),
-            lenMAX: Len, 
+            lenMAX: Len,
             fileList: paramsList.map((v) => {
               return {
                 targetPath: v.targetPath,

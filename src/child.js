@@ -1,4 +1,4 @@
-const http = require("http");
+const { request } = require("./utils");
 const path = require("path");
 const fs = require("fs");
 
@@ -31,7 +31,7 @@ async function child(opttions) {
 
   // console.log("Range", Range);
 
-  http
+  request(url)
     .get(
       url,
       {
