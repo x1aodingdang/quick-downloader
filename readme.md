@@ -1,8 +1,8 @@
-# Quick-Downloader
+# Quick-Downloader: a command-line Downloader
 
-一个简单的下载器...
+# CORE
 
-![alt 属性文本](/docs/quick-downloader.png)
+![core process](/docs/quick-downloader.png)
 
 # SUPPORT
 
