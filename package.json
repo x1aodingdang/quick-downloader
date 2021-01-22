@@ -1,6 +1,6 @@
 {
   "name": "quick-downloader",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "a command-line Downloader downloader",
   "main": "src/index.js",
   "scripts": {
@@ -21,16 +21,18 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^6.2.1",
-    "nodemon": "^2.0.6",
     "single-line-log": "^1.1.2"
   },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
   "bin": {
-    "quick-downloader": "./bin/index",
-    "qd": "./bin/index"
+    "quick-downloader": "./bin/index.js",
+    "qd": "./bin/index.js"
   },
   "files": [
     "bin",
-    "doc",
+    "docs",
     "src"
   ],
   "nodemonConfig": {}
