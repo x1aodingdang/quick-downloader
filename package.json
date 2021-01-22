@@ -12,6 +12,7 @@
   "author": "x1aodingdang",
   "license": "ISC",
   "dependencies": {
+    "commander": "^6.2.1",
     "log4js": "^6.3.0",
     "natives": "^1.1.6",
     "nodemon": "^2.0.6",
