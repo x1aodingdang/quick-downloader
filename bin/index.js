@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require("fs");
 const { Command } = require("commander");
 const main = require("../src/index");
