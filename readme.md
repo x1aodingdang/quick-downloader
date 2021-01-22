@@ -1,4 +1,4 @@
-# Quick-Downloader: a command-line Downloader
+# Quick-Downloader: a command-line Quick Downloader
 
 # CORE
 
