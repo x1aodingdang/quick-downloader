@@ -125,7 +125,7 @@ function main(options) {
           // console.log("params", params);
           // child(params);
 
-          const child = child_process.fork(`./src/child.js`, [], {});
+          const child = child_process.fork(`./child.js`, [], {});
 
           child.on("message", (message) => {
             switch (message.type) {
