@@ -1,6 +1,6 @@
 {
   "name": "quick-downloader",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "a command-line Downloader downloader",
   "main": "dist/src/index.js",
   "scripts": {
