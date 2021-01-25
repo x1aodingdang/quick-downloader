@@ -45,7 +45,13 @@ const COUNT = os.cpus().length - 1;
 function main(options) {
   // child_process.exec("rm -rf ./output/")
 
-  const { url, output = OUTPUT, workerCount = COUNT } = options;
+  const { url, output = OUTPUT, workerCount: _workerCount = COUNT } = options;
+
+  const workerCount = Math.max(_workerCount, 1);
+
+  // console.log("url: ", url);
+  // console.log("output: ", output);
+  // console.log("workerCount: ", workerCount);
 
   if (!url) {
     throw "ERROR: URL is empty";
