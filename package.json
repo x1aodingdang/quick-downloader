@@ -9,7 +9,8 @@
     "start:child": "nodemon --max-old-space-size=3000 --inspect src/child.js",
     "build:bin": "babel bin --out-dir dist/bin",
     "build:src": "babel src --out-dir dist/src",
-    "build": "npm run build:bin & npm run build:src"
+    "build": "npm run build:bin & npm run build:src",
+    "publish:npm": "npm run build & npm publish"
   },
   "repository": {
     "type": "git",
