@@ -11,6 +11,7 @@
 # Available Options:
 
 `-o` or `--output` The output directory (defaults to System temporary directory)
+
 `-w` or `--workerCount` Number of threads of execution. Integers greater than 1 (defaults to `cpu().length - 1`)
 
 # SUPPORT
