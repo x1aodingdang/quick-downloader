@@ -31,10 +31,6 @@ module.exports = function (options) {
     return v.targetPath;
   });
 
-  if (!fs.existsSync(output)) {
-    fs.mkdirSync(output);
-  }
-
   const fileWriteStream = fs.createWriteStream(output); // 创建一个可写流
 
   fileWriteStream.on("close", (e) => {
