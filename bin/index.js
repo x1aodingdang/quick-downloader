@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const { Command } = require("commander");
+const package = require("./package.json");
 const main = require("../src/index");
 
 const program = new Command();
@@ -19,7 +20,7 @@ const checkUrl = (url) => {
 //
 program
   .name("qd")
-  .version("0.0.1")
+  .version(package.version)
 
   .arguments("<url>")
 
