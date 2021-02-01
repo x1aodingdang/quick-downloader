@@ -1,0 +1,8 @@
+/.vscode/
+/node_modules
+/output
+/package-lock.json
+yarn.lock
+/bin
+/src
+.babelrc

@@ -1,6 +1,6 @@
 {
   "name": "quick-downloader",
-  "version": "1.0.12",
+  "version": "1.0.16",
   "description": "a command-line Downloader downloader",
   "main": "dist/src/index.js",
   "scripts": {
@@ -38,9 +38,5 @@
     "quick-downloader": "./dist/bin/index.js",
     "qd": "./dist/bin/index.js"
   },
-  "files": [
-    "dist",
-    "docs"
-  ],
   "nodemonConfig": {}
 }
